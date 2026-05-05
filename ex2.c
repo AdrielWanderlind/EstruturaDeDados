@@ -81,7 +81,7 @@ void push(dados info){
 void pop(){
 	printf("Desempilhando...\n	");
 	if (top==NULL) {
-		printf("A pilha est· vazia\n");
+		printf("A pilha est√° vazia\n");
 	} else {
 		no *temp;
 		temp=top;
