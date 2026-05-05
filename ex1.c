@@ -91,7 +91,7 @@ void gerar(){
 void push(int item){
 	printf("\nEMPILHANDO...\n");
 	no *novo=malloc(sizeof(no));
-	// necessário vericiar se há memória
+	// necessÃ¡rio vericiar se hÃ¡ memÃ³ria
 	novo->dado=item;
 	novo->proximo=top;
 	top=novo;
