@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <time.h>
 
-void push(int item);
-void pop();
+void enqueue(int item);
+void dequeue();
 void imprimir();
 int entrada_dados();
 
@@ -94,7 +94,7 @@ void gerar(){
 void push(int item){
 	printf("\nENFILEIRANDO...\n");
 	no *novo=malloc(sizeof(no));
-	// necessário vericiar se há memória
+	// necessÃ¡rio vericiar se hÃ¡ memÃ³ria
 	novo->dado=item;
 	novo->proximo=NULL;
 	if (inicio==NULL){
