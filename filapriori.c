@@ -1,134 +1,309 @@
-//concluir um programa em linguagem C que implemente duas filas (uma geral e uma de prioridade)
-//A regra para prioridade deverá ser a seguinte:
-//Ao chegar a pessoa, ela deverá ser ingressada na Fila 1 (geral) mas verificando prioridade para a mesma fila.
-//A prioridade ocorre para pessoas com 60 anos ou mais, obedecendo a prioridade na idade.
-//Exemplo:
-//chegada pessoa 40 anos   40,
-//chegada pessoa 61 anos   61,40
-//chegada pessoa 19 anos   61,40,19
-//chegada pessoa 60 anos   61,60,40,19
-//chegada pessoa 73 anos   73,61,60,40,19
-//chegada pessoa 27 anos   73,61,60,40,19,27
-//chegada pessoa 69 anos   73,69,61,60,40,19,27
-
-//A funcionalidade SEPARAR FILAS deverá mover as pessoas prioritárias para uma segunda fila
-
-
-
 #include <stdlib.h>
 #include <stdio.h>
 
-void esv1();
-void enqueue(int item);
-void dequeue();
-void imprimir();
-int entrada_dados();
+typedef struct apelido{
+    int dado;
+    struct apelido *proximo;
+} no;
 
-typedef struct apelido{ //apelido do nó
-	int dado; // dado do nó
-	struct apelido *proximo; // chamando o próximo de si
-}no;  // criação do nó
-// ----------------------------
+// FILA 1 (GERAL)
 no *inicio1 = NULL;
 no *final1 = NULL;
 
+// FILA 2 (PRIORIDADE)
 no *inicio2 = NULL;
 no *final2 = NULL;
-//----------------------------
 
-// ---------------------------
+// ProtÃ³tipos
+void enqueue(int item);
+void dequeue();
+void dequeueFila2();
+void separarFilas();
+void imprimirFila1();
+void imprimirFila2();
+int entrada_dados();
+
+//--------------------------------------------------
 int main(){
-  int n, opcao, prioridade;
-  do {
-    system("cls");
-    printf("\n=========== FILA DE PRIORIDADE ===========");
-    printf("\n1. Enfileirar Fila1 (geral)");
-    printf("\n2. Desenfileirar Fila1 (geral)");
-    printf("\n3. Desenfileirar Fila Prioridade");
-    printf("\n4. Separar Filas");
-    printf("\n5. Imprimir Fila1 (Geral)");  
-    printf("\n6. Imprimir Fila Prioridade...");
-    printf("\n7. Sair");
-    printf("\nEscolha uma opcao: ");
-    scanf("%d", &opcao);
-    switch (opcao){
-      case 1:
-			n=entrada_dados();
- 			enqueue(n);
-        break;
-      case 2:
- 			esv1();
-        break;
-      case 3:
- 
-        break;
-      case 4:
- 
-        break;
-      case 5:
- 
-        break;
-      case 6:
- 
-        break;
-     }
-  } while (opcao != 7);
-  system("pause");
-  return 0;
-} 
 
-//----------------------------------------
+    int n, opcao;
+
+    do{
+        system("cls");
+
+        printf("\n=========== FILA DE PRIORIDADE ===========");
+        printf("\n1. Enfileirar Fila1 (geral)");
+        printf("\n2. Desenfileirar Fila1 (geral)");
+        printf("\n3. Desenfileirar Fila Prioridade");
+        printf("\n4. Separar Filas");
+        printf("\n5. Imprimir Fila1 (Geral)");
+        printf("\n6. Imprimir Fila Prioridade");
+        printf("\n7. Sair");
+        printf("\nEscolha uma opcao: ");
+        scanf("%d", &opcao);
+
+        switch(opcao){
+
+            case 1:
+                n = entrada_dados();
+                enqueue(n);
+                break;
+
+            case 2:
+                dequeue();
+                break;
+
+            case 3:
+                dequeueFila2();
+                break;
+
+            case 4:
+                separarFilas();
+                break;
+
+            case 5:
+                imprimirFila1();
+                break;
+
+            case 6:
+                imprimirFila2();
+                break;
+
+            case 7:
+                printf("\nEncerrando programa...\n");
+                break;
+
+            default:
+                printf("\nOpcao invalida!\n");
+                system("pause");
+        }
+
+    }while(opcao != 7);
+
+    return 0;
+}
+
+//--------------------------------------------------
 void enqueue(int item){
-	printf("Enfileirando...\n");
-	no *novo=malloc(sizeof(no));
-	
-	novo->dado=item;
-	novo->proximo=NULL;
-	
-	if (inicio1==NULL){
-		inicio1=novo;
-		final1=novo;
-	} else {
-		final1->proximo=novo;
-		final1 = novo;
-	}
-	printf("Valor %d Enfileirado\n", novo->dado);
-  system("pause");
-}
-//----------------------------------------
-void esv1(){
-	while(inicio1!=NULL){
-		dequeue();
-	}
-		printf("\nVazio!\n");
-	system("pause");
-}
-//-------------------------------------
-void dequeue(){
-		if (inicio1==NULL){ 
-			printf("A fila esta vazia\n");
-		} else{
-			no *temp=inicio1;
-			inicio1=inicio1->proximo;
-			printf("Valor %d desenfileirado com sucesso\n",temp->dado);
-			free(temp);
-			if (inicio1==NULL){
-				final1=NULL;
-			}
-		}
-  system("pause");
-}
-//----------------------------------------
-void imprimir(){
 
-  system("pause");
+    printf("\nEnfileirando...\n");
+
+    no *novo = (no*)malloc(sizeof(no));
+
+    novo->dado = item;
+    novo->proximo = NULL;
+
+    // Fila vazia
+    if(inicio1 == NULL){
+        inicio1 = final1 = novo;
+    }
+
+    // Pessoa prioritÃ¡ria (60 anos ou mais)
+    else if(item >= 60){
+
+        // Entra no inÃ­cio se for mais velha
+        if(inicio1->dado < 60 || item > inicio1->dado){
+
+            novo->proximo = inicio1;
+            inicio1 = novo;
+        }
+        else{
+
+            no *atual = inicio1;
+
+            while(atual->proximo != NULL &&
+                  atual->proximo->dado >= 60 &&
+                  atual->proximo->dado >= item){
+
+                atual = atual->proximo;
+            }
+
+            novo->proximo = atual->proximo;
+            atual->proximo = novo;
+
+            if(novo->proximo == NULL){
+                final1 = novo;
+            }
+        }
+    }
+
+    // Pessoa sem prioridade
+    else{
+
+        final1->proximo = novo;
+        final1 = novo;
+    }
+
+    printf("Pessoa de %d anos inserida com sucesso!\n", item);
+    system("pause");
 }
-//----------------------------------------
+
+//--------------------------------------------------
+void dequeue(){
+
+    if(inicio1 == NULL){
+
+        printf("\nFila Geral vazia!\n");
+    }
+    else{
+
+        no *temp = inicio1;
+
+        inicio1 = inicio1->proximo;
+
+        printf("\nPessoa de %d anos removida da Fila Geral.\n",
+               temp->dado);
+
+        free(temp);
+
+        if(inicio1 == NULL){
+            final1 = NULL;
+        }
+    }
+
+    system("pause");
+}
+
+//--------------------------------------------------
+void dequeueFila2(){
+
+    if(inicio2 == NULL){
+
+        printf("\nFila Prioridade vazia!\n");
+    }
+    else{
+
+        no *temp = inicio2;
+
+        inicio2 = inicio2->proximo;
+
+        printf("\nPessoa de %d anos removida da Fila Prioridade.\n",
+               temp->dado);
+
+        free(temp);
+
+        if(inicio2 == NULL){
+            final2 = NULL;
+        }
+    }
+
+    system("pause");
+}
+
+//--------------------------------------------------
+void separarFilas(){
+
+    no *atual = inicio1;
+    no *anterior = NULL;
+
+    while(atual != NULL){
+
+        if(atual->dado >= 60){
+
+            no *prioritario = atual;
+
+            if(anterior == NULL){
+                inicio1 = atual->proximo;
+            }
+            else{
+                anterior->proximo = atual->proximo;
+            }
+
+            atual = atual->proximo;
+
+            prioritario->proximo = NULL;
+
+            // Inserir na fila 2
+            if(inicio2 == NULL){
+                inicio2 = final2 = prioritario;
+            }
+            else{
+                final2->proximo = prioritario;
+                final2 = prioritario;
+            }
+        }
+        else{
+
+            anterior = atual;
+            atual = atual->proximo;
+        }
+    }
+
+    if(inicio1 == NULL){
+        final1 = NULL;
+    }
+
+    printf("\nPessoas prioritarias movidas para a Fila Prioridade.\n");
+    system("pause");
+}
+
+//--------------------------------------------------
+void imprimirFila1(){
+
+    no *aux = inicio1;
+
+    printf("\n========== FILA GERAL ==========\n");
+
+    if(aux == NULL){
+
+        printf("Fila vazia!\n");
+    }
+    else{
+
+        while(aux != NULL){
+
+            printf("%d", aux->dado);
+
+            if(aux->proximo != NULL){
+                printf(" -> ");
+            }
+
+            aux = aux->proximo;
+        }
+
+        printf("\n");
+    }
+
+    system("pause");
+}
+
+//--------------------------------------------------
+void imprimirFila2(){
+
+    no *aux = inicio2;
+
+    printf("\n======= FILA PRIORIDADE =======\n");
+
+    if(aux == NULL){
+
+        printf("Fila vazia!\n");
+    }
+    else{
+
+        while(aux != NULL){
+
+            printf("%d", aux->dado);
+
+            if(aux->proximo != NULL){
+                printf(" -> ");
+            }
+
+            aux = aux->proximo;
+        }
+
+        printf("\n");
+    }
+
+    system("pause");
+}
+
+//--------------------------------------------------
 int entrada_dados(){
-	int valor;
-	printf("Qual idade da pessoa que ira entrar na fila? \n");
-	scanf("%d",&valor);
-	
-	return valor;
+
+    int valor;
+
+    printf("\nQual a idade da pessoa que ira entrar na fila? ");
+    scanf("%d", &valor);
+
+    return valor;
 }
-//----------------------------------------
