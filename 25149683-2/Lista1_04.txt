@@ -1,0 +1,1 @@
+O tipo de ser o mesmo da própria estrutura, por exemplo: struct no *prox, pois ele precisa armazenar o endereço de memória de outro nó da mesma estrutura. Já sobre o consumo, depende do sistema, de for de 32 bits será consumido 4 bytes, se for 64 bits será consumido 8 bytes
