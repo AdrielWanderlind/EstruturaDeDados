@@ -1,0 +1,1 @@
+Histórico de navegação é um exemplo de pilha, o navegador guarda as páginas em pilha, outro exemplo é é retornar com ctrl + z
