@@ -1,0 +1,12 @@
+Exemplos são:
+Último nó aponta para o primeiro;
+Não existe fim com NULL;
+Percurso contínuo;
+Boa para processamento repetitivo;
+Inserção eficiente.
+
+Exemplo prático:
+
+Playlist em modo repetição
+Rodízio de processos do sistema operacional
+Escala rotativa de atendimento

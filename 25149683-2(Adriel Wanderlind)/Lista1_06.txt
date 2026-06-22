@@ -1,0 +1,1 @@
+Ao atribuir NULL ao ponteiro do topo da pilha, a pilha passa a ser considerada vazia, pois não existe mais referência para o primeiro elemento.

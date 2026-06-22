@@ -1,0 +1,1 @@
+Como a lista recebeu NULL não é possível remover o 30, pois ele já não existe mais

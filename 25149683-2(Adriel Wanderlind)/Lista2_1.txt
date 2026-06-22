@@ -1,0 +1,3 @@
+Saída do programa:
+
+10 30 20 40 50

@@ -1,0 +1,7 @@
+Essa condição faz duas verificações simultaneamente:
+
+aux verifica se o ponteiro ainda aponta para um nó válido.
+
+aux->valor != num verifica se o valor atual é diferente do valor procurado.
+
+Enquanto existir nó e o valor não for encontrado, a busca continua: aux=aux->proximo;
