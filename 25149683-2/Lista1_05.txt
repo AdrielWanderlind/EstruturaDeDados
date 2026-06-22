@@ -1,1 +1,0 @@
-As possíveis operações são: push, que consiste em adicionar um novo elemento ao topo da pilha, e Pop, que retira o elemento que está no topo da pilha.

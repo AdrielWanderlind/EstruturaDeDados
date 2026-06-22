@@ -1,1 +1,0 @@
-A pilha segue o princípio de LIFO, utiliza também push e pop, push adiciona um elemento ao topo da pilha e pop remove do topo. Já a fila segue o princípio de FIFO, tento queue e enqueue, queue adiciona um elemento no final da fila e enqueue remove do início
